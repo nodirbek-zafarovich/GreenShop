@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import kaktus from "../../assets/Super.png";
+import { useInput } from "@mui/base";
 
 function valuetext(value) {
   return `${value}°C`;
@@ -23,6 +24,20 @@ export const Categories = () => {
     } else {
       setValue1([value1[0], Math.max(newValue[1], value1[0] + minDistance)]);
     }
+  };
+  const [priceRange, setPriceRange] = useState({ min: 39, max: 1230 });
+
+  const getRandomPriceRange = () => {
+    const minLimit = 10;
+    const maxLimit = 1500;
+    const newMin = Math.floor(Math.random() * (maxLimit - minLimit)) + minLimit;
+    const newMax = Math.floor(Math.random() * (maxLimit - newMin)) + newMin + 50; 
+    return { min: newMin, max: newMax };
+  };
+
+  const handleFilter = () => {
+    const newPriceRange = getRandomPriceRange();
+    setPriceRange(newPriceRange);
   };
 
   return (
@@ -146,13 +161,18 @@ export const Categories = () => {
           />
         </Box>
 
-        <p className="ml-4 mt-2 text-gray-700">
-          Price:
-          <span className="text-green-600 font-semibold">$39 - $1230</span>
-        </p>
-        <button className="w-[90px] h-[35px] bg-green-600 rounded-lg font-bold text-white mt-7 ml-4">
-          Filter
-        </button>
+        <p>
+        Price:
+        <span className="text-green-600 font-semibold">
+          ${priceRange.min} - ${priceRange.max}
+        </span>
+      </p>
+      <button
+        className="w-[90px] h-[35px] bg-green-600 rounded-lg font-bold text-white mt-7 ml-4"
+        onClick={handleFilter}
+      >
+        Filter
+      </button>
 
         <h2 className="text-gray-700 font-bold text-xl mt-14">Size</h2>
 
